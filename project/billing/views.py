@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Item
-from .serializers import ItemSerializer
+from .serializers import ItemSerializer, OrderSerializer
 from .services.order_handle_service import OrderHandleService
 from .services.item_handle_service import ItemHandleService
 
@@ -28,14 +28,17 @@ class ItemBuyView(APIView):
     
 class OrderCreateView(APIView):
 
-    def post(self, request, item_ids, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         
-        try:
-            intent = OrderHandleService.create_order(item_ids)
-        except Item.DoesNotExist:
+        serializer = OrderSerializer(data=request.data)
+
+        if not serializer.is_valid():
             return Response(
-                status=status.HTTP_404_NOT_FOUND
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
             )
+
+        intent = OrderHandleService.create_order(serializer.data['items'])
 
         return Response({
             'client_secret': intent.client_secret,   
