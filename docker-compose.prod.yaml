@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    volumes:
+      - static_volume:/opt/services/django/static
+      - media_volume:/opt/services/django/media
+      - frontend_volume:/opt/services/frontend
+    env_file:
+      - ./.env
+    ports:
+      - 80:80
+    depends_on:
+      - django
+
+  django:
+    volumes:
+      - static_volume:/usr/src/backend/project/static
+
+
+volumes:
+  static_volume:
+  media_volume: 
