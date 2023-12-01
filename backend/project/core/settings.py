@@ -29,13 +29,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    
+    'corsheaders',
+
     'django_extensions',
 
     'billing'
 ]
 
 MIDDLEWARE = [
+
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -128,3 +131,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STRIPE_PUBLISHABLE_KEY=os.getenv('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY=os.getenv('STRIPE_SECRET_KEY')
+
+### CORS ###
+
+CORS_ALLOW_ALL_ORIGINS = True
