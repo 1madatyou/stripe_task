@@ -7,7 +7,8 @@ from rest_framework import status
 
 from .models import Item
 from .serializers import ItemSerializer
-from .services.payment_intent_service import PaymentIntentService
+from .services.order_handle_service import OrderHandleService
+from .services.item_handle_service import ItemHandleService
 
 
 class ItemBuyView(APIView):
@@ -15,25 +16,26 @@ class ItemBuyView(APIView):
     def get(self, request, item_id, *args, **kwargs):
 
         try:
-            item = Item.objects.get(id=item_id)
+            intent = ItemHandleService.create_purchase(item_id)
         except Item.DoesNotExist:
             return Response(
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        intent = PaymentIntentService.create_intent(int(item.price))
-
         return Response({
             'client_secret': intent.client_secret
         }, status.HTTP_200_OK)
     
-class OrderMakeView(APIView):
+class OrderCreateView(APIView):
 
     def post(self, request, item_ids, *args, **kwargs):
-
-        order_price = Item.objects.filter(id__in=item_ids).aggregate(res=(Sum('price')))['res']
-
-        intent = PaymentIntentService.create_intent(int(order_price))
+        
+        try:
+            intent = OrderHandleService.create_order(item_ids)
+        except Item.DoesNotExist:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND
+            )
 
         return Response({
             'client_secret': intent.client_secret,   
