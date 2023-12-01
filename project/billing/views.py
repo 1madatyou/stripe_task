@@ -1,3 +1,5 @@
+from django.db.models.aggregates import Sum 
+
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -23,7 +25,19 @@ class ItemBuyView(APIView):
 
         return Response({
             'client_secret': intent.client_secret
-        }, 200)
+        }, status.HTTP_200_OK)
+    
+class OrderMakeView(APIView):
+
+    def post(self, request, item_ids, *args, **kwargs):
+
+        order_price = Item.objects.filter(id__in=item_ids).aggregate(res=(Sum('price')))['res']
+
+        intent = PaymentIntentService.create_intent(int(order_price))
+
+        return Response({
+            'client_secret': intent.client_secret,   
+        }, status.HTTP_200_OK)
     
 class ItemRetrieveView(RetrieveAPIView):
     serializer_class = ItemSerializer
