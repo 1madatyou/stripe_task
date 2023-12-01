@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react';
 
 import ItemCard from './components/item-card/ItemCard';
+import CheckoutForm from './components/checkout-form/CheckoutForm';
 import useOrderService from './services/OrderService';
 
 import './App.css';
+
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+
+const stripePromise = loadStripe("pk_test_51OHkvpEKNtuk6xCITYIbYPNLSRuBPa8z9GknVu9TLezyTMQB1iH5hpQsgakeQh0ZE9dPBbmfrKKmuMvmpb9MCtCb00tH5D1y0V");
 
 
 function App() {
@@ -31,6 +37,14 @@ function App() {
       })
   }
 
+  const appearance = {
+    theme: 'stripe',
+  };
+  const options = {
+    clientSecret,
+    appearance,
+  };  
+
   return (
     <div className='wrapper'>
       <div className='card-list'>
@@ -46,7 +60,16 @@ function App() {
       </h1>
       <button className='btn btn-warning' onClick={onPurchase}>Purchase</button>
     </div>
+      <div>
+        {clientSecret && (
+          <Elements options={options} stripe={stripePromise}>
+            <CheckoutForm />
+          </Elements>
+        )}
+      </div>
     </div>
+
+    
   );
 }
 
