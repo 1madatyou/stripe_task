@@ -14,13 +14,16 @@ services:
       - ./.env
     ports:
       - 80:80
-
     depends_on:
       - django
 
   django:
     volumes:
       - static_volume:/usr/src/backend/project/static
+
+  frontend:
+    volumes: 
+      - frontend_volume:/usr/src/frontend
 
 
 volumes:

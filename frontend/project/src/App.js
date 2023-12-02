@@ -14,7 +14,7 @@ const stripePromise = loadStripe("pk_test_51OHkvpEKNtuk6xCITYIbYPNLSRuBPa8z9GknV
 
 function App() {
 
-  const [clientSecret, setClientSecret] = useState('');
+  const [clientSecret, setClientSecret] = useState(null);
 
   const [itemList, setItemList] = useState([]);
   const [shoppingCart, setShoppingCart] = useState([]);
@@ -33,7 +33,9 @@ function App() {
   const onPurchase = () => {
     createOrder(shoppingCart)
       .then((clientSecret) => {
-        setClientSecret(clientSecret)
+        setClientSecret(null)
+        setTimeout(() => setClientSecret(clientSecret), 2000)
+        setShoppingCart([])
       })
   }
 
@@ -58,7 +60,7 @@ function App() {
       <h1>
         Total cost: {totalCost} $
       </h1>
-      <button className='btn btn-warning' onClick={onPurchase}>Purchase</button>
+      <button className='btn btn-warning' onClick={onPurchase}>Buy</button>
     </div>
       <div>
         {clientSecret && (

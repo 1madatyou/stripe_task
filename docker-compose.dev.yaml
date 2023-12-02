@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+
+  frontend:
+    command: npm start
+    volumes: 
+      - ./frontend:/usr/src/frontend
+    ports:  
+      - 3000:3000
+    
+  django:
+    ports:
+      - 8000:8000
+
+
+volumes:
+  postgres_data:
+  frontend_volume: 

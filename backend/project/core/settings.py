@@ -141,3 +141,7 @@ STRIPE_SECRET_KEY=os.getenv('STRIPE_SECRET_KEY')
 ### CORS ###
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    f'http://{os.getenv("DOMAIN_NAME")}'
+]

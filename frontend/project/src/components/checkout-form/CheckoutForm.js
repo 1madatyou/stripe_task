@@ -85,7 +85,7 @@ export default function CheckoutForm() {
     <form id="payment-form" onSubmit={handleSubmit} style={{width: "400px"}}>
 
       <PaymentElement id="payment-element" options={paymentElementOptions} />
-      <button disabled={isLoading || !stripe || !elements} id="submit" className="btn btn-primary">
+      <button disabled={isLoading || !stripe || !elements} id="submit" className="btn btn-primary" style={{marginTop: '15px'}}>
         <span id="button-text">
           {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
         </span>
