@@ -27,7 +27,7 @@ docker compose up
 На удаленном сервере:
 
 - React app доступно по адресу $DOMAIN_NAME
-- Django app доступно по адресу $API_DOMAIN NAME
+- Django app доступно по адресу $API_DOMAIN NAME<br>
   Переменные - из .env.
 
 Доступ к админ-панели осуществляется через $API_DOMAIN NAME/admin
