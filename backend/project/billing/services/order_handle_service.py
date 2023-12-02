@@ -21,9 +21,10 @@ class OrderHandleService:
         new_order.items.set(items)
 
         order_price = new_order.items.aggregate(res=(Sum('price')))['res']
+        order_price_in_cents = int(order_price)*100
 
         intent = stripe.PaymentIntent.create(
-            amount=int(order_price),
+            amount=order_price_in_cents,
             currency='usd',
         )
 
