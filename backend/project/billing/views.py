@@ -1,4 +1,4 @@
-from django.db.models.aggregates import Sum 
+from django.db.models.aggregates import Sum
 
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.views import APIView
@@ -18,38 +18,36 @@ class ItemBuyView(APIView):
         try:
             intent = ItemHandleService.create_purchase(item_id)
         except Item.DoesNotExist:
-            return Response(
-                status=status.HTTP_404_NOT_FOUND
-            )
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-        return Response({
-            'client_secret': intent.client_secret
-        }, status.HTTP_200_OK)
-    
+        return Response({"client_secret": intent.client_secret}, status.HTTP_200_OK)
+
+
 class OrderCreateView(APIView):
 
     def post(self, request, *args, **kwargs):
-        
+
         serializer = OrderSerializer(data=request.data)
 
         if not serializer.is_valid():
-            return Response(
-                serializer.errors,
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        intent = OrderHandleService.create_order(serializer.data['items'])
+        intent = OrderHandleService.create_order(serializer.data["items"])
 
-        return Response({
-            'client_secret': intent.client_secret,   
-        }, status.HTTP_200_OK)
-    
+        return Response(
+            {
+                "client_secret": intent.client_secret,
+            },
+            status.HTTP_200_OK,
+        )
+
+
 class ItemRetrieveView(RetrieveAPIView):
     serializer_class = ItemSerializer
     queryset = Item.objects.all()
-    lookup_url_kwarg = 'item_id'
+    lookup_url_kwarg = "item_id"
+
 
 class ItemListView(ListAPIView):
     serializer_class = ItemSerializer
     queryset = Item.objects.all()
-

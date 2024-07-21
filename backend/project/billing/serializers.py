@@ -9,8 +9,10 @@ class ItemSerializer(ModelSerializer):
         model = Item
         fields = ["id", "name", "description", "price"]
 
+
 class OrderSerializer(ModelSerializer):
     items = PrimaryKeyRelatedField(queryset=Item.objects.all(), many=True)
+
     class Meta:
         model = Order
         fields = ["items"]

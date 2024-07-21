@@ -6,6 +6,7 @@ from billing.models import Item
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
+
 class ItemHandleService:
 
     @staticmethod
@@ -15,7 +16,7 @@ class ItemHandleService:
 
         intent = stripe.PaymentIntent.create(
             amount=int(item.price),
-            currency='usd',
+            currency="usd",
         )
-        
+
         return intent
